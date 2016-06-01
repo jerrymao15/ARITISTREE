@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "buble-react-rollup-starter": "^1.2.0",
+    "d3": "^3.5.17",
     "express": "^4.13.4",
     "gulp": "^3.9.1",
     "lodash.clonedeep": "^4.3.2",

@@ -1,23 +1,25 @@
 'use strict';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Node from './components/node.jsx';
-import SearchStart from './components/searchStart.jsx';
+import Node from './components/Node.jsx';
+import SearchStart from './components/SearchStart.jsx';
 import {ajax} from 'jquery';
-import cloneDeep from './cloneDeep.js'
+import cloneDeep from './cloneDeep.js';
+import treepls from './tree.js'
 
-
+treepls();
 class ArtistTree extends React.Component {
   constructor() {
     this.state = {
+      artist: '',
       first: '',
       clicked: false,
       children: []
      };
     this.bfsFindAndAdd = this.bfsFindAndAdd.bind(this);
     this.findArtist = this.findArtist.bind(this);
-    this.submittingMang = this.submittingMang.bind(this);
     this.getFirst = this.getFirst.bind(this);
+    this.submittingMang = this.submittingMang.bind(this);
   }
 
   bfsFindAndAdd(compare, children) {
@@ -40,7 +42,6 @@ class ArtistTree extends React.Component {
     helper(temp);
     this.setState(temp);
   }
-
 
   findArtist (e) {
     this.setState({first: e.target.value})

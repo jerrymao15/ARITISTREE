@@ -30051,17 +30051,87 @@
 	   }
 	}
 
+	function treepls() {
+
+	  var treeData = {
+	    artist:'Kanye West',
+	    children: [{artist:'JAY-Z',children:[]}, {artist:'Kid Cudi',children:[]}, {artist:'Mos Def',children:[]}]
+	  }
+
+
+
+	  var margin = {
+	    top: 120,
+	    right: 120,
+	    bottom: 20,
+	    left: 120
+	  },
+	  width = 1000 - margin.right - margin.left,
+	  height = 1200 - margin.top - margin.bottom;
+
+	  var i = 0
+
+	  var tree = d3.layout.tree().size([height, width]);
+
+	  var diagonal = d3.svg.diagonal()
+	  .projection(function (d) {return [d.x, d.y];});
+
+	  var svg = d3.select("body").append("svg")
+	  .attr("width", width + margin.right + margin.left)
+	  .attr("height", height + margin.top + margin.bottom).append("g")
+	  .attr('transform', ("translate(" + (margin.left) + ", " + (margin.top) + ")"));
+
+	  update(treeData);
+
+	  function update(source) {
+
+	    var nodes = tree.nodes(treeData).reverse(),
+	    links = tree.links(nodes);
+
+	    nodes.forEach(function (d) {d.y = d.depth * 250});
+
+	    var node = svg.selectAll('g.node')
+	    .data(nodes, function (d) {return d.id || (d.id = ++i);});
+
+	    var nodeEnter = node.enter().append('g')
+	    .attr('class', 'node')
+	    .attr('transform', function (d) {
+	      return ("translate(" + (d.x) + ", " + (d.y) + ")");
+	    })
+
+	    nodeEnter.append('circle')
+	    .attr("r", 50);
+
+	    nodeEnter.append("text")
+	    .attr("y", function (d) {
+	      return d.children || d._children ? 0 : 0; })
+	      .attr("dy", ".35em")
+	      .attr("text-anchor", "middle")
+	      .text(function (d) { return d.artist; })
+	      .style("fill-opacity", 1);
+
+	      var link = svg.selectAll("path.link")
+	      .data(links, function(d) { return d.target.id; });
+
+	      link.enter().insert("path", "g")
+	      .attr("class", "link")
+	      .attr("d", diagonal);
+	    }
+	}
+
+	treepls();
 	var ArtistTree = (function (superclass) {
 	  function ArtistTree() {
 	    this.state = {
+	      artist: '',
 	      first: '',
 	      clicked: false,
 	      children: []
 	     };
 	    this.bfsFindAndAdd = this.bfsFindAndAdd.bind(this);
 	    this.findArtist = this.findArtist.bind(this);
-	    this.submittingMang = this.submittingMang.bind(this);
 	    this.getFirst = this.getFirst.bind(this);
+	    this.submittingMang = this.submittingMang.bind(this);
 	  }
 
 	  if ( superclass ) ArtistTree.__proto__ = superclass;
@@ -30088,7 +30158,6 @@
 	    helper(temp);
 	    this.setState(temp);
 	  };
-
 
 	  ArtistTree.prototype.findArtist = function findArtist (e) {
 	    this.setState({first: e.target.value})

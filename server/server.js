@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/artist/:artist', (req, res) => {
-
+  if (norepeats.length === 0) norepeats.push(req.params.artist);
   request(`https://api.spotify.com/v1/search?q=${req.params.artist}&type=artist&limit=1`, (err, response, html) => {
     const artistID = JSON.parse(html).artists.items[0].id;
     request(`https://api.spotify.com/v1/artists/${artistID}/related-artists?q=limit=3`, (err2, response2, html2) => {
