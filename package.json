@@ -1,7 +1,7 @@
 {
-  "name": "react-lol",
+  "name": "ARTISTREE",
   "version": "1.0.0",
-  "description": "react??",
+  "description": "interactive tree written with React and the Spotify API.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server/server.js",
