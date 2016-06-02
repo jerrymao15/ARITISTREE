@@ -1,5 +1,7 @@
 'use strict';
 
+var nodez = document.createElement('div')
+
 function treepls() {
 
   const treeData = {
@@ -25,7 +27,7 @@ function treepls() {
   const diagonal = d3.svg.diagonal()
   .projection(d => {return [d.x, d.y];});
 
-  let svg = d3.select("body").append("svg")
+  let svg = d3.select(nodez).append("svg")
   .attr("width", width + margin.right + margin.left)
   .attr("height", height + margin.top + margin.bottom).append("g")
   .attr('transform', `translate(${margin.left}, ${margin.top})`);
@@ -68,4 +70,4 @@ function treepls() {
     }
 }
 
-export default treepls;
+export default nodez;

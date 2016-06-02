@@ -5,16 +5,19 @@ import Node from './components/Node.jsx';
 import SearchStart from './components/SearchStart.jsx';
 import {ajax} from 'jquery';
 import cloneDeep from './cloneDeep.js';
-import treepls from './tree.js'
+import Tree from './components/Tree.jsx';
+import FauxTree from './components/FauxTree.jsx'
+import ReactFauxDOM from 'react-faux-dom';
 
-treepls();
 class ArtistTree extends React.Component {
   constructor() {
     this.state = {
-      artist: '',
       first: '',
-      clicked: false,
-      children: []
+      treeData: {
+        artist:'',
+        clicked: false,
+        children: []
+      }
      };
     this.bfsFindAndAdd = this.bfsFindAndAdd.bind(this);
     this.findArtist = this.findArtist.bind(this);
@@ -23,7 +26,7 @@ class ArtistTree extends React.Component {
   }
 
   bfsFindAndAdd(compare, children) {
-    let temp = cloneDeep(this.state);
+    let temp = this.state.treeData;
     temp.clicked = true;
     function helper(node) {
       const queue = [];
@@ -40,7 +43,7 @@ class ArtistTree extends React.Component {
       }
     }
     helper(temp);
-    this.setState(temp);
+    this.setState({treeData: temp});
   }
 
   findArtist (e) {
@@ -48,8 +51,10 @@ class ArtistTree extends React.Component {
   }
 
   getFirst(e) {
-    e.preventDefault();
-    this.setState({artist: this.state.first, first: ''});
+  const firsta = this.state.first;
+  console.log(firsta);
+  e.preventDefault();
+  this.setState({treeData: {artist: firsta, children: []}, first: ''});
   }
 
   submittingMang (artist, e, id) {
@@ -75,15 +80,13 @@ class ArtistTree extends React.Component {
         <SearchStart
           value = {this.state.first}
           findArtist = {this.findArtist}
-          homies = {this.state.homies}
           getFirst = {this.getFirst}
+          submittingMang = {this.submittingMang}
           id ="search"
           />
 
         <Node
-          artist = {this.state.artist}
-          children = {this.state.children}
-          clicked = {this.state.clicked}
+          _data = {this.state.treeData}
           submittingMang = {this.submittingMang}
           />
 

@@ -5,55 +5,64 @@ import React from 'react';
 
 class TreeNode extends React.Component {
 
-  componentDidMount() {
-    //enter code
-    //wrap component in d3?
-  }
-
-  shouldComponentUpdate() {
-
-  }
-
-  componentDidUpdate() {
-    //update code
-  }
-
   handleClick() {
     if (!this.props.clicked) {
       this.props.submittingMang(this.props.artist)
     }
   }
 
+  componentDidMount() {
+    //enter code
+    //wrap component in d3?
+  }
+
+
+
+  componentDidUpdate() {
+    //update code
+  }
+
+
   render() {
-    var renderArr = [];
-    if (this.props.children) {
-      renderArr = this.props.children.map(ele => {
-        return (
-          <Node
-            artist = {ele.artist}
-            children = {ele.children}
-            submittingMang = {this.props.submittingMang}
-            clicked = {ele.clicked}
-            />
-        )
-      });
-    }
-
     const gStyle = {
-
+      container: {
+        transform: `translate(${this.props.x}, ${this.props.y})`
+      }
     }
     const circleStyle = {
-      r=50
+      container: {
+        r:50
+      }
     };
-    const textStyle = {};
-
+    // const textStyle = {
+    //   fill-opacity:1
+    // };
 
     return (
-      <g className="node">
-        <circle/>
-        <text>
-      </g>
+      <div className="node-div">
+        <g className="node" onClick={this.handleClick.bind(this)} style={gStyle}>
+          <circle style={circleStyle} />
+          <text>
+            {this.props.artist}
+          </text>
+        </g>
+      </div>
     )
+
+
+
+    // return (
+    //   <div>
+      // <g className="node"
+      //   transform={`translate(${this.props.x}, ${this.props.y})`}
+      //   >
+      //   <circle style={circleStyle}/>
+      //   <text text-anchor="middle">
+      //     {this.props.artist}
+      //   </text>
+      // </g>
+  //     </div>
+  //   )
   }
 
 }

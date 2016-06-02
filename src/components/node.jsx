@@ -6,15 +6,16 @@ import React from 'react';
 class Node extends React.Component {
 
   handleClick() {
-    if (!this.props.clicked) {
-      this.props.submittingMang(this.props.artist)
+    if (!this.props._data.clicked) {
+      this.props.submittingMang(this.props._data.artist)
     }
   }
 
   render() {
+    console.log(this.props);
     var renderArr = [];
-    if (this.props.children) {
-      renderArr = this.props.children.map(ele => {
+    if (this.props._data.children) {
+      renderArr = this.props._data.children.map(ele => {
         return (
           <Node
             artist = {ele.artist}
@@ -29,7 +30,7 @@ class Node extends React.Component {
     return (
       <div>
         <div className = "artist-nodes" onClick = {this.handleClick.bind(this)}>
-          {this.props.artist}
+          {this.props._data.artist}
         </div>
         { renderArr }
       </div>
