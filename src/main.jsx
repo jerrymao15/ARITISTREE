@@ -8,6 +8,7 @@ import cloneDeep from './cloneDeep.js';
 import Tree from './components/Tree.jsx';
 import FauxTree from './components/FauxTree.jsx'
 import ReactFauxDOM from 'react-faux-dom';
+import WorkPls from './components/RD3Tree.jsx'
 
 class ArtistTree extends React.Component {
   constructor() {
@@ -84,7 +85,7 @@ class ArtistTree extends React.Component {
           id ="search"
           />
 
-        <FauxTree
+        <WorkPls
           _data = {this.state.treeData}
           submittingMang = {this.submittingMang}
           />
