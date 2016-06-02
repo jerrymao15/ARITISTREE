@@ -33121,79 +33121,22 @@
 	  return Tree;
 	}(React.Component));
 
+	// const treeData = {
+	//   artist:'Kanye West',
+	//   children: [{artist:'JAY-Z',children:[{artist:'JAY-Z',children:[]}]}, {artist:'Kid Cudi',children:[]}, {artist:'Mos Def',children:[]}]
+	// }
+
 	var FauxTree = (function (superclass) {
 	  function FauxTree() {
-	    this.state = {
-	      i:0,
-	      startGraph: d3.layout.tree().size([1000, 1200]
-	      )
-	    };
-	    this.updateTree = this.updateTree.bind(this)
+	    this.state = {};
 	  }
 
 	  if ( superclass ) FauxTree.__proto__ = superclass;
 	  FauxTree.prototype = Object.create( superclass && superclass.prototype );
 	  FauxTree.prototype.constructor = FauxTree;
 
-	  // shouldComponentUpdate() {
-	  //   return false;
-	  // }
-
-	  FauxTree.prototype.updateTree = function updateTree() {
-	    var this$1 = this;
-
-	    var updating = this.state.startGraph;
-	    var updatei = this.state.i;
-	    var nodes = updating.nodes(this.props._data).reverse(),
-	    links = updating.links(nodes);
-
-	    nodes.forEach(function (d) {d.y = d.depth * 250});
-
-	    var node = d3.selectAll('node')
-	    .data(nodes, function (d) {
-	      return d.id || (d.id = ++this$1.state.i);});
-
-	    var diagonal = d3.svg.diagonal()
-	    .projection(function (d) {return [d.x, d.y];});
-
-	    var nodeEnter = node.enter().append('g')
-	    .attr('class', 'node')
-	    .attr('transform', function (d) {
-	      return ("translate(" + (d.x) + ", " + (d.y) + ")");
-	    })
-	    .on('click', function (d) {
-	      clicker(d.artist)
-	    })
-
-	    nodeEnter.append('circle')
-	    .attr("r", 50);
-
-	    nodeEnter.append("text")
-	    .attr("y", function (d) {
-	      return d.children || d._children ? 0 : 0; })
-	      .attr("dy", ".35em")
-	      .attr("text-anchor", "middle")
-	      .text(function (d) { return d.artist; })
-	      .style("fill-opacity", 1);
-
-	      var link = d3.selectAll("link")
-	      .data(links, function (d) {
-	        console.log(d);
-	      });
-
-	      link.enter().insert("path", "g")
-	      .attr("class", "link")
-	      .attr("d", diagonal);
-	      console.log('updatetree');
-	      this.setState({graph:updating})
-	  };
-
-	  FauxTree.prototype.componentDidUpdate = function componentDidUpdate() {
-	    console.log('cdu');
-	    var updatei = this.state.i;
-	    var graphState = this.state.startGraph;
-	    var clicker = this.props.submittingMang;
-	    var graph = ReactFauxDOM$1.createElement('div');
+	  FauxTree.prototype.render = function render() {
+	    var faux = new ReactFauxDOM$1.Element('div');
 	    var margin = {
 	      top: 120,
 	      right: 120,
@@ -33203,35 +33146,34 @@
 	    width = 1000 - margin.right - margin.left,
 	    height = 1200 - margin.top - margin.bottom;
 
+	    var i = 0
+
+	    var tree = d3.layout.tree().size([height, width]);
 
 	    var diagonal = d3.svg.diagonal()
 	    .projection(function (d) {return [d.x, d.y];});
 
-	    var svg = d3.select(graph).append("svg")
+	    var svg = d3.select(faux).append("svg")
 	    .attr("width", width + margin.right + margin.left)
 	    .attr("height", height + margin.top + margin.bottom).append("g")
 	    .attr('transform', ("translate(" + (margin.left) + ", " + (margin.top) + ")"));
 
-	    update(this.props._data);
+	    update(this.state._data);
 
 	    function update(source) {
 
-	      var nodes = graphState.nodes(source).reverse(),
-	      links = graphState.links(nodes);
+	      var nodes = tree.nodes(source).reverse(),
+	      links = tree.links(nodes);
 
 	      nodes.forEach(function (d) {d.y = d.depth * 250});
 
 	      var node = svg.selectAll('g.node')
-	      .data(nodes, function (d) {return d.id || (d.id = ++updatei);});
+	      .data(nodes, function (d) {return d.id || (d.id = ++i);});
 
 	      var nodeEnter = node.enter().append('g')
 	      .attr('class', 'node')
 	      .attr('transform', function (d) {
 	        return ("translate(" + (d.x) + ", " + (d.y) + ")");
-	      })
-	      .on('click', function (d) {
-	        console.log(d);
-	        clicker(d.artist)
 	      })
 
 	      nodeEnter.append('circle')
@@ -33252,17 +33194,11 @@
 	        .attr("class", "link")
 	        .attr("d", diagonal);
 	      }
-
-	      this.setState({graph:graph});
-	  };
-
-
-
-	  FauxTree.prototype.render = function render() {
-	    if (!this.state.graph) {
-	      return React.createElement( 'div', null)
-	    }
-	    return this.state.graph.toReact();
+	    return (
+	      React.createElement( 'div', null,
+	        faux.toReact()
+	      )
+	    )
 
 
 	  };
@@ -33275,7 +33211,7 @@
 	    this.state = {
 	      first: '',
 	      treeData: {
-	        artist:'',
+	        artist:'Enter here',
 	        clicked: false,
 	        children: []
 	      }
@@ -33345,7 +33281,7 @@
 	        React.createElement( SearchStart, {
 	          value: this.state.first, findArtist: this.findArtist, getFirst: this.getFirst, submittingMang: this.submittingMang, id: "search" }),
 
-	        React.createElement( Node$1, {
+	        React.createElement( FauxTree, {
 	          _data: this.state.treeData, submittingMang: this.submittingMang })
 
 	      )

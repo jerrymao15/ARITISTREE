@@ -14,7 +14,7 @@ class ArtistTree extends React.Component {
     this.state = {
       first: '',
       treeData: {
-        artist:'',
+        artist:'Enter here',
         clicked: false,
         children: []
       }
@@ -85,7 +85,7 @@ class ArtistTree extends React.Component {
           id ="search"
           />
 
-        <Node
+        <FauxTree
           _data = {this.state.treeData}
           submittingMang = {this.submittingMang}
           />
