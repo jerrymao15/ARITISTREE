@@ -32,7 +32,7 @@ app.get('/artist/:artist', (req, res) => {
       for (let i = 0; related.length < 3 && JSON.parse(html2).artists[i]; i++) {
         let musicppl = JSON.parse(html2).artists[i].name;
         if (norepeats.indexOf(musicppl)=== -1) {
-          related.push({artist: musicppl, children: []});
+          related.push({artist: musicppl});
           norepeats.push(musicppl)
         }
       }

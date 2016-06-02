@@ -3,10 +3,10 @@ import React from 'react';
 import TreeNode from './TreeNode.jsx'
 import ReactFauxDOM from 'react-faux-dom';
 
-// const treeData = {
-//   artist:'Kanye West',
-//   children: [{artist:'JAY-Z',children:[{artist:'JAY-Z',children:[]}]}, {artist:'Kid Cudi',children:[]}, {artist:'Mos Def',children:[]}]
-// }
+const treeData = {
+  artist:'Kanye West',
+  children: [{artist:'JAY-Z',children:[{artist:'JAY-Z',children:[]}]}, {artist:'Kid Cudi',children:[]}, {artist:'Mos Def',children:[]}]
+}
 
 class FauxTree extends React.Component {
   constructor() {
@@ -77,7 +77,6 @@ class FauxTree extends React.Component {
         {faux.toReact()}
       </div>
     )
-
 
   }
 

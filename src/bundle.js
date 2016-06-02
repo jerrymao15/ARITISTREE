@@ -33121,11 +33121,6 @@
 	  return Tree;
 	}(React.Component));
 
-	// const treeData = {
-	//   artist:'Kanye West',
-	//   children: [{artist:'JAY-Z',children:[{artist:'JAY-Z',children:[]}]}, {artist:'Kid Cudi',children:[]}, {artist:'Mos Def',children:[]}]
-	// }
-
 	var FauxTree = (function (superclass) {
 	  function FauxTree() {
 	    this.state = {};
@@ -33200,7 +33195,6 @@
 	      )
 	    )
 
-
 	  };
 
 	  return FauxTree;
@@ -33211,9 +33205,8 @@
 	    this.state = {
 	      first: '',
 	      treeData: {
-	        artist:'Enter here',
+	        artist:'Drake',
 	        clicked: false,
-	        children: []
 	      }
 	     };
 	    this.bfsFindAndAdd = this.bfsFindAndAdd.bind(this);

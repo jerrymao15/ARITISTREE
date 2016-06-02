@@ -14,9 +14,8 @@ class ArtistTree extends React.Component {
     this.state = {
       first: '',
       treeData: {
-        artist:'Enter here',
+        artist:'Drake',
         clicked: false,
-        children: []
       }
      };
     this.bfsFindAndAdd = this.bfsFindAndAdd.bind(this);
