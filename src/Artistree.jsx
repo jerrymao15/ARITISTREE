@@ -1,24 +1,17 @@
-'use strict';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Node from './components/Node.jsx';
 import SearchStart from './components/SearchStart.jsx';
-import {ajax} from 'jquery';
-import cloneDeep from './cloneDeep.js';
-import Tree from './components/Tree.jsx';
-import FauxTree from './components/FauxTree.jsx'
-import ReactFauxDOM from 'react-faux-dom';
-import WorkPls from './components/RD3Tree.jsx'
+import Node from './components/Node.jsx';
+import 'whatwg-fetch';
 
-class ArtistTree extends React.Component {
+
+
+class Artistree extends React.Component {
   constructor() {
+    super();
     this.state = {
       first: '',
-      treeData: {
-        artist:'Drake',
-        clicked: false,
-      }
-     };
+      treeData: {}
+    }
     this.bfsFindAndAdd = this.bfsFindAndAdd.bind(this);
     this.findArtist = this.findArtist.bind(this);
     this.getFirst = this.getFirst.bind(this);
@@ -51,32 +44,23 @@ class ArtistTree extends React.Component {
   }
 
   getFirst(e) {
-  const firsta = this.state.first;
-  console.log(firsta);
-  e.preventDefault();
-  this.setState({treeData: {artist: firsta, children: []}, first: ''});
+    const firsta = this.state.first;
+    e.preventDefault();
+    this.setState({treeData: {artist: firsta, children: []}, first: ''});
   }
 
   submittingMang (artist, e, id) {
-    let that = this.bfsFindAndAdd;
-    $.ajax({
-      url: `http://localhost:3000/artist/${artist}`,
-      type: 'GET',
-      dataType: 'json',
-      contentType: 'application/json'
-    })
-    .done(homies => {
-      that(artist, homies);
-    })
-    .fail(function() {
-      console.log("error");
-    });
+    const init = {method: 'GET'}
+    fetch(`http://localhost:3000/artist/${artist}`, init)
+    .then(res => {return res.json();})
+    .then(json => {this.bfsFindAndAdd(artist, json);})
+    .catch(err => {console.log('GET error');})
   }
 
   render() {
-
     return (
       <div>
+      <h1>artistree</h1>
         <SearchStart
           value = {this.state.first}
           findArtist = {this.findArtist}
@@ -84,18 +68,14 @@ class ArtistTree extends React.Component {
           submittingMang = {this.submittingMang}
           id ="search"
           />
-
-        <WorkPls
-          _data = {this.state.treeData}
+        <Node 
+          treeData = {this.state.treeData}
           submittingMang = {this.submittingMang}
-          />
-
+        />
       </div>
     )
   }
 }
 
-ReactDOM.render(
-  <ArtistTree />,
-  document.getElementById('content')
-)
+
+export default Artistree;

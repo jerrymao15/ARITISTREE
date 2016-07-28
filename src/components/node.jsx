@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 
 
@@ -6,20 +5,22 @@ import React from 'react';
 class Node extends React.Component {
 
   handleClick() {
-    if (!this.props._data.clicked) {
-      this.props.submittingMang(this.props._data.artist)
+    if (!this.props.treeData.clicked) {
+      this.props.submittingMang(this.props.treeData.artist)
     }
   }
 
   render() {
-    console.log(this.props);
     var renderArr = [];
-    if (this.props._data.children) {
-      renderArr = this.props._data.children.map(ele => {
+    if (this.props.treeData.children) {
+      renderArr = this.props.treeData.children.map(ele => {
+        const td = {
+          artist: ele.artist,
+          children: ele.children
+        }
         return (
           <Node
-            artist = {ele.artist}
-            children = {ele.children}
+            treeData = {td}
             submittingMang = {this.props.submittingMang}
             clicked = {ele.clicked}
             />
@@ -30,7 +31,7 @@ class Node extends React.Component {
     return (
       <div>
         <div className = "artist-nodes" onClick = {this.handleClick.bind(this)}>
-          {this.props._data.artist}
+          {this.props.treeData.artist}
         </div>
         { renderArr }
       </div>
