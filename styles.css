@@ -1,3 +1,7 @@
+body {
+  font-family: QuickSand, "Helvetica Neue", sans-serif;
+}
+
 .node {
   cursor: pointer;
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 import SearchStart from './components/SearchStart.jsx';
+import Tree from './components/Tree.jsx';
 import Node from './components/Node.jsx';
 import 'whatwg-fetch';
-
 
 
 class Artistree extends React.Component {
@@ -10,8 +10,8 @@ class Artistree extends React.Component {
     super();
     this.state = {
       first: '',
-      treeData: {}
-    }
+      treeData: {},
+    };
     this.bfsFindAndAdd = this.bfsFindAndAdd.bind(this);
     this.findArtist = this.findArtist.bind(this);
     this.getFirst = this.getFirst.bind(this);
@@ -36,44 +36,43 @@ class Artistree extends React.Component {
       }
     }
     helper(temp);
-    this.setState({treeData: temp});
+    this.setState({ treeData: temp });
   }
 
-  findArtist (e) {
-    this.setState({first: e.target.value})
+  findArtist(e) {
+    this.setState({ first: e.target.value });
   }
 
   getFirst(e) {
     const firsta = this.state.first;
     e.preventDefault();
-    this.setState({treeData: {artist: firsta, children: []}, first: ''});
+    this.setState({ treeData: { artist: firsta, children: [] }, first: '' });
   }
 
-  submittingMang (artist, e, id) {
-    const init = {method: 'GET'}
+  submittingMang(artist, e, id) {
+    const init = { method: 'GET' };
     fetch(`http://localhost:3000/artist/${artist}`, init)
-    .then(res => {return res.json();})
-    .then(json => {this.bfsFindAndAdd(artist, json);})
-    .catch(err => {console.log('GET error');})
+      .then(res => { return res.json(); })
+      .then(json => { this.bfsFindAndAdd(artist, json); })
+      .catch(err => { console.log('GET error'); });
   }
 
   render() {
     return (
       <div>
-      <h1>artistree</h1>
+        <h1>artistree</h1>
         <SearchStart
-          value = {this.state.first}
-          findArtist = {this.findArtist}
-          getFirst = {this.getFirst}
-          submittingMang = {this.submittingMang}
-          id ="search"
-          />
-        <Node 
-          treeData = {this.state.treeData}
-          submittingMang = {this.submittingMang}
+          value= {this.state.first}
+          findArtist={this.findArtist}
+          getFirst ={this.getFirst}
+          id="search"
+        />
+        <Tree
+          treeData={this.state.treeData}
+          submittingMang={this.submittingMang}
         />
       </div>
-    )
+    );
   }
 }
 
