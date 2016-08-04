@@ -37,7 +37,7 @@ export default class Tree extends React.Component {
       // using the information provided by d3
       // to render Node components
       renderArr.push(<TreeNode
-        xtranslate={d.x}
+        xtranslate={d.x + this.state.nodeW / 2}
         ytranslate={d.y}
         key={i}
         artist={d.data.artist}
@@ -66,7 +66,7 @@ export default class Tree extends React.Component {
     select(document.getElementById('atree'))
     .selectAll('path.link').data(links, d => { return d.target.id; })
     .enter()
-    .insert('svg:path', 'foreignObject')
+    .insert('svg:path', 'g')
     .attr('class', 'link')
     .attr('d', (node) => {
       // creating a cubic bezier curve for the link

@@ -19,7 +19,7 @@ class Artistree extends React.Component {
   }
 
   bfsFindAndAdd(compare, children) {
-    let temp = this.state.treeData;
+    let temp = Object.assign({} ,  this.state.treeData);
     temp.clicked = true;
     function helper(node) {
       const queue = [];
@@ -54,7 +54,7 @@ class Artistree extends React.Component {
     fetch(`http://localhost:3000/artist/${artist}`, init)
       .then(res => { return res.json(); })
       .then(json => { this.bfsFindAndAdd(artist, json); })
-      .catch(err => { console.log('GET error'); });
+      .catch(err => { console.log(`GET error with ${artist}`); });
   }
 
   render() {
@@ -62,9 +62,9 @@ class Artistree extends React.Component {
       <div>
         <h1>artistree</h1>
         <SearchStart
-          value= {this.state.first}
+          value={this.state.first}
           findArtist={this.findArtist}
-          getFirst ={this.getFirst}
+          getFirst={this.getFirst}
           id="search"
         />
         <Tree
