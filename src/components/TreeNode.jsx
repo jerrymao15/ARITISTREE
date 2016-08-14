@@ -9,6 +9,7 @@ export default class TreeNode extends React.Component {
   }
 
   handleClick() {
+    this.props.selectArtist(this.props.artist);
     if (!this.props.clicked) {
       this.props.submittingMang(this.props.artist);
     }
