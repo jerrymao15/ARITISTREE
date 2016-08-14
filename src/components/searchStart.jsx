@@ -1,27 +1,21 @@
-'use strict';
 import React from 'react';
 
 
-
-class SearchStart extends React.Component {
-
-
-  render() {
-    return (
+function SearchStart(props) {
+  return (
       <div>
-        <form onSubmit={this.props.getFirst}>
+        <form onSubmit={props.getFirst}>
           <input
             type="text"
-            onChange={this.props.findArtist}
-            value={this.props.value}
+            onChange={props.findArtist}
+            value={props.value}
             id="searchdudes"
             />
         </form>
       </div>
 
-
-    )
-  }
+    
+  )
 }
 
 
