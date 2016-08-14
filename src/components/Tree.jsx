@@ -19,7 +19,8 @@ export default class Tree extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const nodes = tree().size([window.innerWidth * 0.6, this.state.height])(hierarchy(nextProps.treeData));
+    const nodes = tree().size([document.getElementById('artistree').clientWidth * 0.6, this.state.height])(hierarchy(nextProps.treeData));
+    console.log(document.getElementById('artistree').clientWidth);
     return this.nodeRender(nodes);
   }
 
@@ -41,10 +42,9 @@ export default class Tree extends React.Component {
         ytranslate={d.y}
         key={i}
         artist={d.data.artist}
-        width={this.state.nodeW}
-        height={this.state.nodeH}
         clicked={!!d.data.clicked}
         submittingMang={this.props.submittingMang}
+        selectArtist={this.props.selectArtist}
       />);
     });
 
@@ -52,7 +52,7 @@ export default class Tree extends React.Component {
     this.setState({
       nodes: renderArr,
       d3nodes: nodes,
-      width: window.innerWidth * 0.6,
+      width: document.getElementById('artistree').clientWidth * 0.6,
     });
     return nodes;
   }
@@ -90,13 +90,14 @@ export default class Tree extends React.Component {
       backgroundColor: '#FAFAFA',
       paddingTop: '20px',
       transform: 'translate(0px, 20px)',
+      flexGrow: '1.5',
     };
     const gStyle = {
       transform: 'translate(0px,40px)',
       fill: '#969696',
     };
     const svgStyle = {
-      transform: `translate(-${this.state.nodeW / 2}px, 0px)`,
+      // transform: `translate(-${this.state.nodeW / 2}px, 0px)`,
     };
     return (
       <div style={divStyle}>
