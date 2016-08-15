@@ -41,6 +41,7 @@ app.get('/artist/:artist', (req, res) => {
 });
 
 app.get('/info/:artist', (req, res) => {
+  if (!artistInfo.hasOwnProperty(req.params.artist.toLowerCase())) return;
   const artistID = artistInfo[req.params.artist.toLowerCase()].id;
   Promise.all([getAlbums(artistID), getTopTracks(artistID)])
   .then(fufill => {

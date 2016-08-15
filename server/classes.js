@@ -1,18 +1,28 @@
-export function Artist(obj) {
-  this.name = obj.name;
-  this.id = obj.id;
-  this.genres = obj.genres;
-  this.imageURL = obj.images[0].url;
+class Spotify {
+  constructor(obj) {
+    this.name = obj.name;
+    this.id = obj.id;
+  }
 }
 
-export function Album(obj) {
-  this.name = obj.name;
-  this.id = obj.id;
-  this.imageURL = obj.images[1].url;
+export class Artist extends Spotify {
+  constructor(obj) {
+    super(obj);
+    this.genres = obj.genres;
+    this.imageURL = obj.images[0].url;
+  }
 }
 
-export function Track(obj) {
-  this.name = obj.name;
-  this.id = obj.id;
-  this.album = obj.album.name;
+export class Album extends Spotify {
+  constructor(obj) {
+    super(obj);
+    this.imageURL = obj.images[1].url;
+  }
+}
+
+export class Track extends Spotify {
+  constructor(obj) {
+    super(obj);
+    this.album = obj.album.name;
+  }
 }
