@@ -11,7 +11,6 @@ const app = express();
 const PORT = 3000;
 const DEVPORT = 9090;
 const artistInfo = {};
-const norepeats = [];
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}.`));
 app.use(cors());
@@ -21,20 +20,14 @@ app.use(express.static(path.join(__dirname, './../')));
 
 app.get('/artist/:artist', (req, res) => {
   const currentArtist = req.params.artist;
-  if (norepeats.length === 0) norepeats.push(currentArtist);
   if (!artistInfo[currentArtist]) {
-    artistInfo[currentArtist] = {};
     new Promise((resolve, reject) => {
       request(`https://api.spotify.com/v1/search?q=${currentArtist}&type=artist&limit=1`, (err, response, html) => resolve(html));
     })
     .then(info => {
-      const spotifyInfo = JSON.parse(info).artists.items[0];
-      artistInfo[currentArtist].name = spotifyInfo.name;
-      artistInfo[currentArtist].id = spotifyInfo.id;
-      artistInfo[currentArtist].genres = spotifyInfo.genres;
-      artistInfo[currentArtist].imageURL = spotifyInfo.images[0].url;
+      artistInfo[currentArtist] = new Artist(JSON.parse(info).artists.items[0]);
       return getRelated(artistInfo[currentArtist].id);
-    }, rej => { throw new Error(`Cannot find aritst ${currentArtist}!`); })
+    }, rej => { throw new Error(`Cannot find artist ${currentArtist}!`); })
     .then(fufill => {
       artistInfo[currentArtist].related = fufill;
       res.send(JSON.stringify(artistInfo[currentArtist]));
@@ -89,14 +82,9 @@ function getRelated(id) {
   });
 }
 
-function formatData(arr) {
-  const related = [];
-  for (let i = 0; related.length < 3 && i < arr.length; i++) {
-    const current = arr[i];
-    if (norepeats.indexOf(current) === -1) {
-      related.push({ artist: current, children: [] });
-      norepeats.push(current);
-    }
-  }
-  return related;
+function Artist(obj) {
+  this.name = obj.name;
+  this.id = obj.id;
+  this.genres = obj.genres;
+  this.imageURL = obj.images[0].url;
 }
