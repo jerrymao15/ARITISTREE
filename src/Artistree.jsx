@@ -11,12 +11,14 @@ class Artistree extends React.Component {
     this.state = {
       first: '',
       treeData: {},
+      artists: {},
       selected: null,
     };
     this.bfsFindAndAdd = this.bfsFindAndAdd.bind(this);
     this.findArtist = this.findArtist.bind(this);
     this.getFirst = this.getFirst.bind(this);
     this.submittingMang = this.submittingMang.bind(this);
+    this.formatData = this.formatData.bind(this);
     this.selectArtist = this.selectArtist.bind(this);
   }
 
@@ -58,6 +60,17 @@ class Artistree extends React.Component {
       .then(json => { this.bfsFindAndAdd(artist, json); })
       .catch(err => { console.log(`GET error with ${artist}`); });
   }
+
+  formatData(arr) {
+    const related = [];
+    for (let i = 0; related.length < 3 && i < arr.length; i++) {
+      const current = arr[i];
+      if (!this.state.artists[current]) {
+        related.push({ artist: current, children: [] });
+      }
+    }
+    return related;
+}
 
   selectArtist(artist, e, id) {
     const init = { method: 'GET' };
