@@ -45,9 +45,9 @@ app.get('/artist/:artist', (req, res) => {
 
 app.get('/app.js', (req, res) => {
   if (process.env.PRODUCTION) {
-    res.sendFile(path.join(__dirname, '/client/app.js'));
+    res.sendFile(path.join(__dirname, '/src/bundle/app.js'));
   } else {
-    res.redirect(`//localhost:${DEVPORT}/client/app.js`);
+    res.redirect(`//localhost:${DEVPORT}/src/bundle/app.js`);
   }
 });
 

@@ -6,6 +6,7 @@
   "author": "Jerry Mao",
   "license": "ISC",
   "scripts": {
+    "build": "webpack --progress --colors --config  webpack.production.config.js",
     "start": "nodemon server/start.js",
     "test": "mocha test/.setup.js test/**/*-Test.js -R nyan"
   },
