@@ -1,11 +1,11 @@
 'use strict';
-const express = require('express');
-const path = require('path');
-const cors = require('cors');
-const request = require('request');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const config = require('../webpack.config');
+import express from 'express';
+import path from 'path';
+import cors from 'cors';
+import request from 'request';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
+import config from '../webpack.config';
 import { Artist, Album, Track } from './classes';
 
 const app = express();
@@ -42,7 +42,6 @@ app.get('/artist/:artist', (req, res) => {
 
 app.get('/info/:artist', (req, res) => {
   const artistID = artistInfo[req.params.artist.toLowerCase()].id;
-  console.log(artistID, 'artistId');
   Promise.all([getAlbums(artistID), getTopTracks(artistID)])
   .then(fufill => {
     res.send(JSON.stringify(fufill));
@@ -101,6 +100,3 @@ function getTopTracks(id) {
   })
 }
 
-// class Spotify {
-  
-// }
