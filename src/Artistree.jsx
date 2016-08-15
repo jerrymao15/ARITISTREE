@@ -57,6 +57,12 @@ class Artistree extends React.Component {
     const init = { method: 'GET' };
     fetch(`http://localhost:3000/artist/${artist}`, init)
       .then(res => res.json())
+      .then(result => {
+        const newArtist = {};
+        newArtist[result.name] = result;
+        this.setState({ artists: Object.assign({}, this.state.artists, newArtist) });
+        return this.formatData(result.related, result.name);
+      })
       .then(json => { this.bfsFindAndAdd(artist, json); })
       .catch(err => { console.log(`GET error with ${artist}`); });
   }
@@ -70,7 +76,7 @@ class Artistree extends React.Component {
       }
     }
     return related;
-}
+  }
 
   selectArtist(artist, e, id) {
     const init = { method: 'GET' };
