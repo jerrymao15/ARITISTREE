@@ -6,6 +6,7 @@ const request = require('request');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const config = require('../webpack.config');
+import { Artist, Album, Track } from './classes';
 
 const app = express();
 const PORT = 3000;
@@ -19,7 +20,7 @@ app.use(express.static(path.join(__dirname, './../')));
 
 
 app.get('/artist/:artist', (req, res) => {
-  const currentArtist = req.params.artist;
+  const currentArtist = req.params.artist.toLowerCase();
   if (!artistInfo[currentArtist]) {
     new Promise((resolve, reject) => {
       request(`https://api.spotify.com/v1/search?q=${currentArtist}&type=artist&limit=1`, (err, response, html) => resolve(html));
@@ -39,11 +40,17 @@ app.get('/artist/:artist', (req, res) => {
   }
 });
 
-// app.get('info/:artist', (req, res) => {
-//   request(`http://api.spotify.com/v1/search/${}/`)
-// })
+app.get('/info/:artist', (req, res) => {
+  const artistID = artistInfo[req.params.artist.toLowerCase()].id;
+  console.log(artistID, 'artistId');
+  Promise.all([getAlbums(artistID), getTopTracks(artistID)])
+  .then(fufill => {
+    res.send(JSON.stringify(fufill));
+    res.end();
+  });
+});
 
-app.get('/app.js', (req, res) => {
+app.get('/src/app.js', (req, res) => {
   if (process.env.PRODUCTION) {
     res.sendFile(path.join(__dirname, '/src/bundle/app.js'));
   } else {
@@ -82,9 +89,18 @@ function getRelated(id) {
   });
 }
 
-function Artist(obj) {
-  this.name = obj.name;
-  this.id = obj.id;
-  this.genres = obj.genres;
-  this.imageURL = obj.images[0].url;
+function getAlbums(id) {
+  return new Promise((resolve, reject) => {
+    request(`https://api.spotify.com/v1/artists/${id}/albums?market=US`, (err, res, html) => resolve(JSON.parse(html).items.map(ele => new Album(ele))));
+  });
 }
+
+function getTopTracks(id) {
+  return new Promise((resolve, reject) => {
+    request(`https://api.spotify.com/v1/artists/${id}/top-tracks?country=US`, (err, res, html) => resolve(JSON.parse(html).tracks.map(ele => new Track(ele))));
+  })
+}
+
+// class Spotify {
+  
+// }
