@@ -1,10 +1,13 @@
 'use strict';
 const express = require('express');
-const app = express();
 const path = require('path');
 const cors = require('cors');
 const request = require('request');
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const config = require('../webpack.config');
 
+const app = express();
 const PORT = 3000;
 const DEVPORT = 9090;
 const artistInfo = {};
@@ -15,28 +18,6 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, './../')));
 
 
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const config = require('../webpack.config');
-
-function getRelated(id) {
-  console.log(id);
-  return new Promise((resolve, reject) => {
-    request(`https://api.spotify.com/v1/artists/${id}/related-artists`, (err, res, html) => resolve(JSON.parse(html).artists.map(ele => ele.name)));
-  });
-}
-
-function formatData(arr) {
-  const related = [];
-  for (let i = 0; related.length < 3 && i < arr.length; i++) {
-    const current = arr[i];
-    if (norepeats.indexOf(current) === -1) {
-      related.push({ artist: current, children: [] });
-      norepeats.push(current);
-    }
-  }
-  return JSON.stringify(related);
-}
 
 app.get('/artist/:artist', (req, res) => {
   const currentArtist = req.params.artist;
@@ -48,18 +29,19 @@ app.get('/artist/:artist', (req, res) => {
     })
     .then(info => {
       const spotifyInfo = JSON.parse(info).artists.items[0];
+      artistInfo[currentArtist].name = spotifyInfo.name;
       artistInfo[currentArtist].id = spotifyInfo.id;
+      artistInfo[currentArtist].genres = spotifyInfo.genres;
       artistInfo[currentArtist].imageURL = spotifyInfo.images[0].url;
       return getRelated(artistInfo[currentArtist].id);
     }, rej => { throw new Error(`Cannot find aritst ${currentArtist}!`); })
     .then(fufill => {
       artistInfo[currentArtist].related = fufill;
-      res.send(formatData(fufill));
-      console.log(artistInfo);
+      res.send(JSON.stringify(artistInfo[currentArtist]));
       res.end();
     });
   } else {
-    res.send(formatData(artistInfo[currentArtist.related]));
+    res.send(JSON.stringify(artistInfo[currentArtist]));
     res.end();
   }
 });
@@ -100,3 +82,21 @@ new WebpackDevServer(webpack(config), {
   if (err) console.log(err);
   console.log('webpack dev server started');
 });
+
+function getRelated(id) {
+  return new Promise((resolve, reject) => {
+    request(`https://api.spotify.com/v1/artists/${id}/related-artists`, (err, res, html) => resolve(JSON.parse(html).artists.map(ele => ele.name)));
+  });
+}
+
+function formatData(arr) {
+  const related = [];
+  for (let i = 0; related.length < 3 && i < arr.length; i++) {
+    const current = arr[i];
+    if (norepeats.indexOf(current) === -1) {
+      related.push({ artist: current, children: [] });
+      norepeats.push(current);
+    }
+  }
+  return related;
+}
