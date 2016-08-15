@@ -12,9 +12,9 @@ module.exports = {
   // This will not actually create a bundle.js file in ./client. It is used
   // by the dev server for dynamic hot loading.
   output: {
-    path: __dirname + '/src/build/',
+    path: __dirname + '/src/',
     filename: 'app.js',
-    publicPath: 'http://localhost:9090/src/build/',
+    publicPath: 'http://localhost:9090/src/',
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],

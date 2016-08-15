@@ -31,17 +31,15 @@ class Artistree extends React.Component {
   bfsFindAndAdd(compare, children) {
     const temp = Object.assign({}, this.state.treeData);
     temp.clicked = true;
+    let queue = [];
     function helper(node) {
-      const queue = [];
       let next = node;
       while (next) {
         if (next.artist === compare) {
           next.clicked = true;
           return next.children = children;
         }
-        next.children.map(child => {
-          queue.push(child);
-        });
+        if (next.children.length > 0) queue = [...queue, ...next.children];
         next = queue.shift();
       }
     }
