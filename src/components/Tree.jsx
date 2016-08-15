@@ -20,7 +20,6 @@ export default class Tree extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const nodes = tree().size([document.getElementById('artistree').clientWidth * 0.6, this.state.height])(hierarchy(nextProps.treeData));
-    console.log(document.getElementById('artistree').clientWidth);
     return this.nodeRender(nodes);
   }
 
