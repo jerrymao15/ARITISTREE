@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 
 
-export default class TreeNode extends React.Component {
+export default class TreeNode extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    this.props.selectArtist(this.props.artist);
     if (!this.props.clicked) {
       this.props.submittingMang(this.props.artist);
     }
+    this.props.selectArtist(this.props.artist);
   }
 
   render() {
@@ -24,7 +23,7 @@ export default class TreeNode extends React.Component {
       <circle
         cx={this.props.xtranslate}
         cy={this.props.ytranslate}
-        r="40"
+        r={this.props.radius}
         stroke="black"
         strokeWidth="3"
         fill="#FAFAFA"
@@ -40,3 +39,13 @@ export default class TreeNode extends React.Component {
     );
   }
 }
+
+TreeNode.propTypes = {
+  xtranslate: PropTypes.string,
+  ytranslate: PropTypes.string,
+  radius: PropTypes.string,
+  artist: PropTypes.string.isRequired,
+  clicked: PropTypes.bool,
+  submittingMang: PropTypes.func.isRequired,
+  selectArtist: PropTypes.func.isRequired,
+};
