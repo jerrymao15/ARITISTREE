@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import SearchStart from './components/SearchStart.jsx';
 import Tree from './components/Tree.jsx';
 import CurrentSong from './components/CurrentSong.jsx';
 import 'whatwg-fetch';
 
 
-class Artistree extends React.Component {
+class Artistree extends Component {
   constructor() {
     super();
     this.state = {

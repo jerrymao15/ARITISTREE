@@ -10,12 +10,10 @@ function SearchStart(props) {
             onChange={props.findArtist}
             value={props.value}
             id="searchdudes"
-            />
+          />
         </form>
       </div>
-
-    
-  )
+  );
 }
 
 

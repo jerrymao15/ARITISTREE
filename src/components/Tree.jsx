@@ -10,8 +10,7 @@ export default class Tree extends React.Component {
       width: 1000,
       height: 900,
       initialHeight: 900,
-      nodeW: 121.35, // golden ratio
-      nodeH: 75,
+      nodeRadius: '30',
       nodes: [],
     };
     this.nodeRender = this.nodeRender.bind(this);
@@ -39,6 +38,7 @@ export default class Tree extends React.Component {
       renderArr.push(<TreeNode
         xtranslate={d.x + this.state.nodeW / 2}
         ytranslate={d.y}
+        radius={this.state.nodeRadius}
         key={i}
         artist={d.data.artist}
         clicked={!!d.data.clicked}
